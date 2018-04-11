@@ -17,6 +17,8 @@ export default class DrawerView extends React.PureComponent {
         : this.props.drawerWidth,
   };
 
+  handleDrawerClose = Function.prototype;
+
   componentWillMount() {
     this._updateScreenNavigation(this.props.navigation);
 
@@ -52,6 +54,10 @@ export default class DrawerView extends React.PureComponent {
     this._updateScreenNavigation(nextProps.navigation);
   }
 
+  onDrawerClose = handleDrawerClose => {
+    this.handleDrawerClose = handleDrawerClose;
+  };
+
   _handleDrawerOpen = () => {
     const { navigation, drawerOpenRoute } = this.props;
     const { routes, index } = navigation.state;
@@ -66,6 +72,7 @@ export default class DrawerView extends React.PureComponent {
     if (routes[index].routeName !== drawerCloseRoute) {
       this.props.navigation.navigate(drawerCloseRoute);
     }
+    this.handleDrawerClose();
   };
 
   _updateScreenNavigation = navigation => {
@@ -116,6 +123,7 @@ export default class DrawerView extends React.PureComponent {
       contentComponent={this.props.contentComponent}
       contentOptions={this.props.contentOptions}
       drawerPosition={this.props.drawerPosition}
+      onDrawerClose={this.onDrawerClose}
       style={this.props.style}
     />
   );
