@@ -27,10 +27,7 @@ class StackView extends React.Component {
         onTransitionStart={this.props.onTransitionStart}
         onTransitionEnd={(transition, lastTransition) => {
           const { onTransitionEnd, navigation } = this.props;
-          if (
-            transition.navigation.state.isTransitioning &&
-            !lastTransition.navigation.state.isTransitioning
-          ) {
+          if (transition.navigation.state.isTransitioning) {
             navigation.dispatch(
               StackActions.completeTransition({
                 key: navigation.state.key,
@@ -60,6 +57,9 @@ class StackView extends React.Component {
     return (
       <StackViewLayout
         {...navigationConfig}
+        onGestureBegin={this.props.onGestureBegin}
+        onGestureCanceled={this.props.onGestureCanceled}
+        onGestureEnd={this.props.onGestureEnd}
         screenProps={screenProps}
         descriptors={this.props.descriptors}
         transitionProps={transitionProps}

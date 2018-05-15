@@ -7,6 +7,7 @@ import {
   Platform,
   StyleSheet,
   View,
+  I18nManager,
   ViewPropTypes,
 } from 'react-native';
 import { MaskedViewIOS } from '../../PlatformHelpers';
@@ -24,7 +25,9 @@ const TITLE_OFFSET = Platform.OS === 'ios' ? 70 : 56;
 
 const getAppBarHeight = isLandscape => {
   return Platform.OS === 'ios'
-    ? isLandscape && !Platform.isPad ? 32 : 44
+    ? isLandscape && !Platform.isPad
+      ? 32
+      : 44
     : 56;
 };
 
@@ -166,7 +169,7 @@ class Header extends React.PureComponent {
     ButtonContainerComponent,
     LabelContainerComponent
   ) => {
-    const { options } = props.scene.descriptor;
+    const { options, navigation } = props.scene.descriptor;
     const backButtonTitle = this._getBackButtonTitleString(props.scene);
     const truncatedBackButtonTitle = this._getTruncatedBackButtonTitle(
       props.scene
@@ -178,7 +181,7 @@ class Header extends React.PureComponent {
     const goBack = () => {
       // Go back on next tick because button ripple effect needs to happen on Android
       requestAnimationFrame(() => {
-        this.props.navigation.goBack(props.scene.descriptor.key);
+        navigation.goBack(props.scene.descriptor.key);
       });
     };
 
@@ -563,6 +566,7 @@ const styles = StyleSheet.create({
     marginTop: -0.5, // resizes down to 20.5
     alignSelf: 'center',
     resizeMode: 'contain',
+    transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }],
   },
   title: {
     bottom: 0,
