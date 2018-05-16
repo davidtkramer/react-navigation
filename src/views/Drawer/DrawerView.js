@@ -17,6 +17,8 @@ export default class DrawerView extends React.PureComponent {
         : this.props.navigationConfig.drawerWidth,
   };
 
+  onDrawerCloseCallback = Function.prototype;
+
   componentDidMount() {
     Dimensions.addEventListener('change', this._updateWidth);
   }
@@ -36,6 +38,11 @@ export default class DrawerView extends React.PureComponent {
     }
   }
 
+  closeDrawer = () => {
+    this._drawer.closeDrawer();
+    return new Promise(resolve => (this.onDrawerCloseCallback = resolve));
+  };
+
   _handleDrawerOpen = () => {
     const { navigation } = this.props;
     const { isDrawerOpen } = navigation.state;
@@ -50,6 +57,7 @@ export default class DrawerView extends React.PureComponent {
     if (isDrawerOpen) {
       navigation.dispatch({ type: DrawerActions.CLOSE_DRAWER });
     }
+    this.onDrawerCloseCallback();
   };
 
   _updateWidth = () => {
@@ -72,6 +80,7 @@ export default class DrawerView extends React.PureComponent {
         contentComponent={this.props.navigationConfig.contentComponent}
         contentOptions={this.props.navigationConfig.contentOptions}
         drawerPosition={this.props.navigationConfig.drawerPosition}
+        closeDrawer={this.closeDrawer}
         style={this.props.navigationConfig.style}
         {...this.props.navigationConfig}
       />
